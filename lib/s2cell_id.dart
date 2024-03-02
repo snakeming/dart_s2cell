@@ -21,7 +21,6 @@ import 'dart:math';
 
 import 's2coords.dart';
 import 's2coords_impl.dart';
-import 's2point.dart';
 export 's2point.dart';
 import 's2latlng.dart';
 import 'util/bits/bits.dart';
@@ -33,8 +32,8 @@ const int _kPosBits = 2 * _kMaxLevel + 1;
 const int _kMaxSize = 1 << _kMaxLevel;
 
 const int _kLookupBits = 4;
-Uint16List _lookupPos = new Uint16List(1 << (2 * _kLookupBits + 2));
-Uint16List _lookupIJ = new Uint16List(1 << (2 * _kLookupBits + 2));
+Uint16List _lookupPos = Uint16List(1 << (2 * _kLookupBits + 2));
+Uint16List _lookupIJ = Uint16List(1 << (2 * _kLookupBits + 2));
 
 void _initLookupCell(
     int level, int i, int j, int origOrientation, int pos, int orientation) {
@@ -85,13 +84,13 @@ class S2CellId {
     S2FaceUV faceUv = xyzToFaceUV(p);
     int i = stToIJ(uvToST(faceUv.uv.u));
     int j = stToIJ(uvToST(faceUv.uv.v));
-    _id = new S2CellId.fromFaceIJ(faceUv.face, i, j).id;
+    _id = S2CellId.fromFaceIJ(faceUv.face, i, j).id;
   }
 
-  S2CellId.fromFace(int face) : _id = (face << _kPosBits) + _lsbForLevel(0) {}
+  S2CellId.fromFace(int face) : _id = (face << _kPosBits) + _lsbForLevel(0);
 
   S2CellId.fromLatLng(S2LatLng latLng)
-      : _id = new S2CellId.fromPoint(latLng.toPoint())._id {}
+      : _id = S2CellId.fromPoint(latLng.toPoint())._id;
 
   S2CellId.fromFaceIJ(int face, int i, int j) {
     // Initialization if not done yet
@@ -130,10 +129,11 @@ class S2CellId {
   // Print the num_digits low order hex digits.
   String hexFormatString(int val, int numDigits) {
     // StringBuffer result = new StringBuffer(); // (numDigits, ' ');
-    List<int> result = new List<int>.filled(numDigits, ' '.codeUnitAt(0));
-    for (; numDigits-- > 0; val >>= 4)
+    List<int> result = List<int>.filled(numDigits, ' '.codeUnitAt(0));
+    for (; numDigits-- > 0; val >>= 4) {
       result[numDigits] = "0123456789abcdef".codeUnitAt(val & 0xF);
-    return new String.fromCharCodes(result);
+    }
+    return String.fromCharCodes(result);
   }
 
   String toToken() {
@@ -161,14 +161,14 @@ class S2CellId {
 
   // Parent returns the cell at the given level, which must be no greater than the current level.
   S2CellId parent([int? level]) {
-    int lsb = _lsbForLevel(level == null ? this.level - 1 : level);
-    return new S2CellId((_id & -lsb) | lsb);
+    int lsb = _lsbForLevel(level ?? this.level - 1);
+    return S2CellId((_id & -lsb) | lsb);
   }
 
   // immediateParent is cheaper than Parent, but assumes !ci.isFace().
   S2CellId immediateParent() {
     int nlsb = lsb() << 2;
-    return new S2CellId((_id & -nlsb) | nlsb);
+    return S2CellId((_id & -nlsb) | nlsb);
   }
 
   // isFace returns whether this is a top-level (face) cell.
@@ -202,7 +202,7 @@ class S2CellId {
     // (which divides by the new z coordinate) might change the other
     // coordinates enough so that we end up in the wrong leaf cell.
     double kScale = 1.0 / _kMaxSize;
-    Uint8List buffer = new Uint8List(8);
+    Uint8List buffer = Uint8List(8);
     buffer.buffer.asFloat64List()[0] = 1.0;
     ++buffer.buffer.asUint64List()[0];
     double kLimit = buffer.buffer.asFloat64List()[0];
@@ -215,17 +215,18 @@ class S2CellId {
 
     // Find the leaf cell coordinates on the adjacent face, and convert
     // them to a cell id at the appropriate level.
-    S2FaceUV faceUV = xyzToFaceUV(faceUVToXYZ(face, new R2Point(u, v)));
-    _id = new S2CellId.fromFaceIJ(faceUV.face, stToIJ(0.5 * (faceUV.u + 1)),
+    S2FaceUV faceUV = xyzToFaceUV(faceUVToXYZ(face, R2Point(u, v)));
+    _id = S2CellId.fromFaceIJ(faceUV.face, stToIJ(0.5 * (faceUV.u + 1)),
             stToIJ(0.5 * (faceUV.v + 1)))
         ._id;
   }
 
   S2CellId.fromFaceIJSame(int face, int i, int j, bool same_face) {
-    if (same_face)
-      _id = new S2CellId.fromFaceIJ(face, i, j)._id;
-    else
-      _id = new S2CellId.fromFaceIJWrap(face, i, j)._id;
+    if (same_face) {
+      _id = S2CellId.fromFaceIJ(face, i, j)._id;
+    } else {
+      _id = S2CellId.fromFaceIJWrap(face, i, j)._id;
+    }
   }
 
 /*

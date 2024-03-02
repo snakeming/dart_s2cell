@@ -27,7 +27,7 @@ class R2Point {
       case 1:
         return y;
       default:
-        throw new Exception("Invalid index");
+        throw Exception("Invalid index");
     }
   }
 

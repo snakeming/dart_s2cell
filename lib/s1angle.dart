@@ -19,12 +19,12 @@
 import 'dart:math';
 
 class S1Angle {
-  double _radians;
-  S1Angle() : _radians = 0.0 {}
+  final double _radians;
+  S1Angle() : _radians = 0.0;
 
-  S1Angle.fromRadians(double radians) : _radians = radians {}
+  S1Angle.fromRadians(double radians) : _radians = radians;
 
-  S1Angle.fromDegrees(double degrees) : _radians = (pi / 180.0) * degrees {}
+  S1Angle.fromDegrees(double degrees) : _radians = (pi / 180.0) * degrees;
 
   double get radians {
     return _radians;

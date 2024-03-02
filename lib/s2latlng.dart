@@ -25,25 +25,25 @@ import 'r2point.dart';
 export 'r2point.dart';
 
 class S2LatLng {
-  S2LatLng(S1Angle lat, S1Angle lng) : _coords = new R2Point(lat.radians, lng.radians);
-  S2LatLng.invalid() : _coords = new R2Point(pi, 2.0 * pi);
-  S2LatLng.zero() : _coords = new R2Point.zero();
-  S2LatLng.fromRadians(double lat, double lng) : _coords = new R2Point(lat, lng);
-  S2LatLng.fromDegrees(double lat, double lng) : _coords = new R2Point(new S1Angle.fromDegrees(lat).radians, new S1Angle.fromDegrees(lng).radians);
+  S2LatLng(S1Angle lat, S1Angle lng) : _coords = R2Point(lat.radians, lng.radians);
+  S2LatLng.invalid() : _coords = R2Point(pi, 2.0 * pi);
+  S2LatLng.zero() : _coords = R2Point.zero();
+  S2LatLng.fromRadians(double lat, double lng) : _coords = R2Point(lat, lng);
+  S2LatLng.fromDegrees(double lat, double lng) : _coords = R2Point(S1Angle.fromDegrees(lat).radians, S1Angle.fromDegrees(lng).radians);
 
   S1Angle get lat {
-    return new S1Angle.fromRadians(_coords.x);
+    return S1Angle.fromRadians(_coords.x);
   }
 
   S1Angle get lng {
-    return new S1Angle.fromRadians(_coords.y);
+    return S1Angle.fromRadians(_coords.y);
   }
 
   R2Point get coords {
     return R2Point(_coords.x, _coords.y);
   }
 
-  R2Point _coords;
+  final R2Point _coords;
 
   bool get isValid {
     return (lat.radians.abs() <= (pi * 2.0) && lng.radians.abs() <= pi);

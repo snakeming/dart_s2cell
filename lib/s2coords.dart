@@ -37,17 +37,19 @@ const int kLimitIJ = 1 << kMaxCellLevel; // == S2CellId::kMaxSize
 const int kMaxSiTi = 1 << (kMaxCellLevel + 1);
 
 double stToUV(double s) {
-  if (s >= 0.5)
+  if (s >= 0.5) {
     return (1.0 / 3.0) * (4 * s * s - 1);
-  else
+  } else {
     return (1.0 / 3.0) * (1 - 4 * (1 - s) * (1 - s));
+  }
 }
 
 double uvToST(double u) {
-  if (u >= 0)
+  if (u >= 0) {
     return 0.5 * sqrt(1 + 3 * u);
-  else
+  } else {
     return 1 - 0.5 * sqrt(1 - 3 * u);
+  }
 }
 
 double ijToSTMin(int i) {
@@ -88,7 +90,7 @@ S2Point faceUVToXYZ(int face, R2Point uv) {
 
 R2Point validFaceXYZToUV(int face, S2Point p) {
   // assert(p.DotProd(GetNorm(face)) > 0);
-  R2Point res = new R2Point(0.0, 0.0);
+  R2Point res = R2Point(0.0, 0.0);
   switch (face) {
     case 0:
       res.x = p[1] / p[0];
@@ -137,7 +139,7 @@ class S2FaceUV {
 }
 
 S2FaceUV xyzToFaceUV(S2Point p) {
-  S2FaceUV res = new S2FaceUV();
+  S2FaceUV res = S2FaceUV();
   res.face = getFace(p);
   res.uv = validFaceXYZToUV(res.face, p);
   return res;

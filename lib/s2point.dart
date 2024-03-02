@@ -28,12 +28,12 @@ class S2Point {
       case 2:
         return z;
       default:
-        throw new Exception("Invalid index");
+        throw Exception("Invalid index");
     }
   }
 
   S2Point abs() {
-    return new S2Point(x.abs(), y.abs(), z.abs());
+    return S2Point(x.abs(), y.abs(), z.abs());
   }
 
   int largestAbsComponent() {
