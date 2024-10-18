@@ -1,5 +1,5 @@
 name: dart_s2cell
-description: "A new Flutter package project."
+description: "Minimal support of s2cell library for dart."
 version: 0.0.1
 homepage:
 

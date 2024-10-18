@@ -3,6 +3,17 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:dart_s2cell/dart_s2cell.dart';
 
 void main() {
+  test('S2CellID.latlng', () {
+    var ll = S2CellId(5185027895138811904).latLng();
+    var expectedLL = S2LatLng.fromDegrees(45.78147499434792, 4.799570770239867);
+    expect(ll.lat.degrees.round(), expectedLL.lat.degrees.round());
+
+    var ll2 = S2CellId(226402483348101380).latLng();
+    var expectedLL2 =
+        S2LatLng.fromDegrees(-32.32163872204854, -3.232390648508235);
+    expect(ll2.lat.degrees.round(), expectedLL2.lat.degrees.round());
+  });
+
   test('adds one to input values', () {
     expect(
         S2CellId.fromLatLng(S2LatLng.fromDegrees(49.703498679, 11.770681595))
